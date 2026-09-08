@@ -42,6 +42,8 @@ ErrorDocument 404 /index.html
 <IfModule mod_expires.c>
 ExpiresActive On
 ExpiresByType text/css   "access plus 7 days"
+# Aenderungen an den Stildateien werden ueber ein Kennzeichen in der
+# Adresse (?v=Zeitstempel) sichtbar, nicht ueber kurze Speicherzeiten.
 ExpiresByType image/jpeg "access plus 30 days"
 ExpiresByType image/png  "access plus 30 days"
 ExpiresByType font/woff2 "access plus 30 days"
