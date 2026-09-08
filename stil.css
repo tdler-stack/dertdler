@@ -208,3 +208,24 @@ footer p{font-size:14.5px;margin-bottom:6px}
 }
 .releases li.gross-werk .titel{color:var(--gold-hell);font-weight:500}
 .releases li.gross-werk .art{color:var(--gold)}
+
+/* ---------- Werkliste als Cover-Raster ---------- */
+.releases{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:26px 20px;margin:30px 0 0;list-style:none;padding:0;
+}
+.releases li{display:block;border:0;padding:0}
+.releases img{
+  width:100%;height:auto;aspect-ratio:1;object-fit:cover;
+  border-radius:3px;background:var(--russ);
+  box-shadow:0 4px 18px rgba(0,0,0,.5);margin-bottom:10px;
+}
+.releases .titel{display:block;color:var(--bein);font-size:15px;line-height:1.35}
+.releases .art{
+  display:block;margin-top:3px;font-family:"Oswald",sans-serif;font-weight:300;
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#7D7269;
+}
+.releases li.gross-werk .titel{color:var(--gold-hell);font-weight:500}
+.releases li.gross-werk .art{color:var(--gold)}
+.releases li.gross-werk img{outline:1px solid var(--gold);outline-offset:-1px}
+@media(max-width:520px){.releases{grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:20px 14px}}
