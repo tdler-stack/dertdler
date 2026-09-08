@@ -99,3 +99,29 @@ footer p{font-size:14.5px;margin-bottom:6px}
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px}
 .handschrift{font-family:"Caveat",cursive;font-size:23px;color:var(--gold-hell)}
 .rechtstext p,.rechtstext li{max-width:74ch}
+
+/* ---------- mehrseitiger Aufbau ---------- */
+.wege{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:34px}
+.weg{
+  display:block;border:1px solid var(--linie);border-radius:3px;padding:24px 22px 22px;
+  background:var(--russ);transition:border-color .18s,background .18s;color:inherit;
+}
+.weg:hover{border-color:var(--gold);background:var(--erhoben);color:inherit}
+.weg h3{margin:0 0 8px}
+.weg p{color:var(--asche);font-size:15.5px;margin:0 0 14px;max-width:none}
+.weg .pfeil{
+  font-family:"Oswald",sans-serif;font-weight:300;font-size:12px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);
+}
+.kopf.klein{padding:56px 0 44px}
+.kopf.klein .logo{font-size:clamp(38px,9vw,64px)}
+.kopf.klein .strich{width:min(200px,40%);margin:14px auto 16px}
+.seitenkopf{padding:56px 0 0}
+.seitenkopf h1{
+  font-family:"Oswald",sans-serif;font-weight:500;
+  font-size:clamp(30px,6vw,44px);line-height:1.12;margin:0 0 8px;letter-spacing:-.01em;
+}
+.zurueck{
+  display:inline-block;margin-top:34px;font-family:"Oswald",sans-serif;font-weight:300;
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+}

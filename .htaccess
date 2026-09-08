@@ -22,6 +22,12 @@ RewriteRule ^datenschutz/?$            /datenschutz.html  [R=301,L]
 RewriteRule ^agbs?/?$                  /                  [R=301,L]
 RewriteRule ^elementor-[0-9]+/?$       /                  [R=301,L]
 
+# --- Freundliche Kurzformen ohne .html ---
+RewriteRule ^musik/?$                  /musik.html        [R=301,L]
+RewriteRule ^buch/?$                   /buch.html         [R=301,L]
+RewriteRule ^apps/?$                   /apps.html         [R=301,L]
+RewriteRule ^kontakt/?$                /kontakt.html      [R=301,L]
+
 # --- Alles Uebrige auf die Startseite ---
 # Greift nur, wenn weder Datei noch Verzeichnis existiert.
 RewriteCond %{REQUEST_FILENAME} !-f
