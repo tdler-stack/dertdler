@@ -1,5 +1,5 @@
 # Steuerdatei fuer www.dertdler.de
-# Gehoert in das Verzeichnis /www/dertdler.de auf dem Webspace.
+# Gehoert in das Verzeichnis /www/dertdler.de/wordpress auf dem Webspace.
 
 AddDefaultCharset UTF-8
 DirectoryIndex index.html
