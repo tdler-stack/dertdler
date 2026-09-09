@@ -13,8 +13,38 @@ Motto-Zeilen.
     schrift.css       Oswald, Barlow und Caveat als eingebettete Schriften
     bilder/           Cover und App-Symbol
 
-Alle sechs Dateien plus den Ordner `bilder/` zu 1blu hochladen, in das
-Wurzelverzeichnis der Domain.
+Alle Dateien plus die Ordner `bilder/`, `en/` und `fr/` zu 1blu hochladen, in
+das Wurzelverzeichnis der Domain.
+
+## Mehrsprachigkeit
+
+Gepflegt werden **nur die deutschen Dateien** im Wurzelverzeichnis. Englisch
+und Franzoesisch werden daraus erzeugt:
+
+    python3 uebersetzen.py
+
+Das schreibt `en/` und `fr/` neu. Danach alles hochladen, auch die beiden
+Ordner.
+
+Texte stehen in `uebersetzung-en.json` und `uebersetzung-fr.json`, jeweils
+deutscher Satz -> Uebersetzung. Was dort fehlt, bleibt deutsch stehen und wird
+beim Lauf aufgelistet - es kann also nichts unbemerkt untergehen.
+
+Drei Dinge macht das Skript von allein, sie gehoeren nicht in die Tabelle:
+
+* Datumsangaben (06.09.2026 wird zu 6 September 2026 bzw. 6 septembre 2026)
+* Coverbeschreibungen der Veroeffentlichungsliste
+* Werktitel bleiben deutsch - alles in `class="titel"` wird nicht angefasst
+
+Soll ein Wort auf einer Seite anders uebersetzt werden als sonst, kommt der
+Dateiname davor:
+
+    "warum.html:Buch": "livre"
+
+So heisst es in der Navigation weiter "Livre", mitten im Satz aber "livre".
+
+Auf den Rechtsseiten setzt das Skript einen Hinweis, dass die deutsche Fassung
+massgeblich ist.
 
 ## Warum die Schriften eingebettet sind
 
@@ -54,14 +84,28 @@ liegen Hochformate quer.
 
 Das ist nicht offensichtlich und hat einmal eine Stunde gekostet.
 
-**Das Wurzelverzeichnis der Domain ist `/www/dertdler.de/wordpress/`** — nicht
-`/www/dertdler.de/`. Der Name stammt von der frueheren WordPress-Installation;
-1blu hat die Domain damals auf diesen Unterordner gelegt. Dateien eine Ebene
-hoeher werden nicht ausgeliefert, auch wenn sie sichtbar dort liegen.
+**Seit dem 09.09.2026 ist der FTP-Zugang eingeschraenkt (chroot).** Er landet
+direkt im Wurzelverzeichnis der Domain. Der Upload-Pfad ist deshalb einfach:
 
-Alle sieben Dateien plus `bilder/` gehoeren also in:
+    ftp://webhosting30.1blu.de/<dateiname>
 
-    /www/dertdler.de/wordpress/
+Ein `CWD www` schlaegt jetzt fehl:
+
+    < 230 OK. Current restricted directory is /
+    > CWD www
+    < 550 Can't change directory to www: No such file or directory
+
+Vorher — und so steht es in aelteren Notizen — war der volle Pfad noetig:
+`/www/dertdler.de/wordpress/`. Der Ordnername stammt von der frueheren
+WordPress-Installation; 1blu hatte die Domain auf diesen Unterordner gelegt.
+Wenn ein Upload ploetzlich `0 Bytes` meldet und die Seite unveraendert bleibt,
+ist wahrscheinlich wieder der Pfad das Problem. Dann mit
+
+    curl -s --ssl-reqd --netrc "ftp://webhosting30.1blu.de/"
+
+nachsehen, was die Wurzel tatsaechlich enthaelt.
+
+Alle HTML-Dateien plus `bilder/` gehoeren in dieses Wurzelverzeichnis.
 
 Die frueheren Inhalte liegen unter `/alt/wordpress` — ausserhalb von `/www`
 und damit aus dem Netz nicht erreichbar.

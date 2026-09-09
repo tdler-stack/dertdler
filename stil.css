@@ -23,6 +23,16 @@ nav a{font-family:"Oswald",sans-serif;font-weight:300;font-size:12.5px;
 nav a:hover,nav a[aria-current]{color:var(--gold-hell)}
 nav .heim{font-weight:500;color:var(--bein);letter-spacing:.1em;font-size:15px}
 
+/* Sprachwahl: rechts abgesetzt, damit sie die Hauptnavigation nicht stoert */
+.sprachen{margin-left:auto;display:flex;gap:11px;padding-left:20px;
+  border-left:1px solid var(--linie)}
+.sprachen a{font-size:11px;letter-spacing:.14em;color:var(--asche)}
+.sprachen a[aria-current]{color:var(--gold)}
+@media(max-width:640px){
+  .sprachen{padding-left:13px;gap:8px}
+  .sprachen a{font-size:10.5px;letter-spacing:.1em}
+}
+
 .kopf{position:relative;overflow:hidden;padding:92px 0 74px;text-align:center;
   border-bottom:1px solid var(--linie)}
 .kopf::after{content:"";position:absolute;inset:0;pointer-events:none;
@@ -229,3 +239,7 @@ footer p{font-size:14.5px;margin-bottom:6px}
 .releases li.gross-werk .art{color:var(--gold)}
 .releases li.gross-werk img{outline:1px solid var(--gold);outline-offset:-1px}
 @media(max-width:520px){.releases{grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:20px 14px}}
+
+/* Hinweis auf den Rechtsseiten der uebersetzten Fassungen */
+.vorbehalt{border-left:2px solid var(--linie);padding-left:14px;margin:0 0 26px;
+  color:var(--asche);font-size:14px}
