@@ -28,9 +28,22 @@ nav .heim{font-weight:500;color:var(--bein);letter-spacing:.1em;font-size:15px}
   border-left:1px solid var(--linie)}
 .sprachen a{font-size:11px;letter-spacing:.14em;color:var(--asche)}
 .sprachen a[aria-current]{color:var(--gold)}
+/* Mit vier Sprachen wird die Zeile eng. Erst enger setzen, dann umbrechen -
+   waagerechtes Scrollen versteckt die letzte Sprache, und niemand sucht sie
+   dort. */
+@media(max-width:960px){
+  nav .mitte{gap:17px}
+  nav a{font-size:11.5px;letter-spacing:.13em}
+  .sprachen{padding-left:14px;gap:9px}
+}
+@media(max-width:760px){
+  nav .mitte{flex-wrap:wrap;height:auto;overflow-x:visible;
+    padding-top:10px;padding-bottom:10px;row-gap:9px}
+  .sprachen{border-left:0;padding-left:0}
+}
 @media(max-width:640px){
-  .sprachen{padding-left:13px;gap:8px}
-  .sprachen a{font-size:10.5px;letter-spacing:.1em}
+  .sprachen{gap:10px}
+  .sprachen a{font-size:11px;letter-spacing:.1em}
 }
 
 .kopf{position:relative;overflow:hidden;padding:92px 0 74px;text-align:center;
