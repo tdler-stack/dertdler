@@ -13,20 +13,20 @@ Motto-Zeilen.
     schrift.css       Oswald, Barlow und Caveat als eingebettete Schriften
     bilder/           Cover und App-Symbol
 
-Alle Dateien plus die Ordner `bilder/`, `en/` und `fr/` zu 1blu hochladen, in
-das Wurzelverzeichnis der Domain.
+Alle Dateien plus die Ordner `bilder/`, `en/`, `fr/` und `pl/` zu 1blu
+hochladen, in das Wurzelverzeichnis der Domain.
 
 ## Mehrsprachigkeit
 
-Gepflegt werden **nur die deutschen Dateien** im Wurzelverzeichnis. Englisch
-und Franzoesisch werden daraus erzeugt:
+Gepflegt werden **nur die deutschen Dateien** im Wurzelverzeichnis. Englisch,
+Franzoesisch und Polnisch werden daraus erzeugt:
 
     python3 uebersetzen.py
 
-Das schreibt `en/` und `fr/` neu. Danach alles hochladen, auch die beiden
+Das schreibt `en/`, `fr/` und `pl/` neu. Danach alles hochladen, auch diese
 Ordner.
 
-Texte stehen in `uebersetzung-en.json` und `uebersetzung-fr.json`, jeweils
+Texte stehen in `uebersetzung-<sprache>.json`, jeweils
 deutscher Satz -> Uebersetzung. Was dort fehlt, bleibt deutsch stehen und wird
 beim Lauf aufgelistet - es kann also nichts unbemerkt untergehen.
 
@@ -35,6 +35,9 @@ Drei Dinge macht das Skript von allein, sie gehoeren nicht in die Tabelle:
 * Datumsangaben (06.09.2026 wird zu 6 September 2026 bzw. 6 septembre 2026)
 * Coverbeschreibungen der Veroeffentlichungsliste
 * Werktitel bleiben deutsch - alles in `class="titel"` wird nicht angefasst
+* Polnische Mehrzahl von "utwor": 4 utwory, aber 6 und 18 utworow
+* Beginnt eine Uebersetzung mit einem Satzzeichen, faellt das Leerzeichen
+  davor weg - sonst entstuende "Erwacht , a pozniej"
 
 Soll ein Wort auf einer Seite anders uebersetzt werden als sonst, kommt der
 Dateiname davor:

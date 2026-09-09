@@ -24,8 +24,9 @@ import sys
 from html.parser import HTMLParser
 
 BASIS = "https://www.dertdler.de"
-SPRACHEN = ("en", "fr")
-NAMEN = {"de": "DE", "en": "EN", "fr": "FR"}
+ALLE = ("de", "en", "fr", "pl")      # Reihenfolge der Sprachwahl
+SPRACHEN = ("en", "fr", "pl")        # was erzeugt wird
+NAMEN = {"de": "DE", "en": "EN", "fr": "FR", "pl": "PL"}
 
 # In diesen Elementen ist Text kein Text, sondern Programm bzw. Gestaltung.
 STUMM = {"script", "style"}
@@ -41,8 +42,18 @@ MONATE = {
            "August", "September", "October", "November", "December"],
     "fr": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
            "août", "septembre", "octobre", "novembre", "décembre"],
+    # Polnisch nennt den Monat im Genitiv: "6 września 2026".
+    "pl": ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca",
+           "sierpnia", "września", "października", "listopada", "grudnia"],
 }
 TITEL_WORT = {"en": "tracks", "fr": "titres"}
+
+
+def utwor(anzahl):
+    """Polnische Mehrzahl von "utwór": 4 utwory, aber 6 und 18 utworow."""
+    if anzahl % 10 in (2, 3, 4) and anzahl % 100 not in (12, 13, 14):
+        return "utwory"
+    return "utworów"
 
 # Rechtstexte werden uebersetzt, aber massgeblich bleibt die deutsche Fassung.
 RECHTSSEITEN = {"impressum.html", "datenschutz.html", "datenschutz-app.html"}
@@ -51,9 +62,12 @@ VORBEHALT = {
           "authoritative.",
     "fr": "Ceci est une traduction de courtoisie. En cas de doute, la version allemande "
           "fait foi.",
+    "pl": "To tłumaczenie ma charakter informacyjny. W razie wątpliwości wiążąca jest "
+          "wersja niemiecka.",
 }
 COVER = {"en": ("Cover of \u201c{}\u201d", "Album cover \u201c{}\u201d."),
-         "fr": ("Pochette de \u00ab\u202f{}\u202f\u00bb", "Pochette de l\u2019album \u00ab\u202f{}\u202f\u00bb.")}
+         "fr": ("Pochette de \u00ab\u202f{}\u202f\u00bb", "Pochette de l\u2019album \u00ab\u202f{}\u202f\u00bb."),
+         "pl": ("Ok\u0142adka \u201e{}\u201d", "Ok\u0142adka albumu \u201e{}\u201d.")}
 
 
 def datum(text, sprache):
@@ -75,7 +89,10 @@ def regeln(text, sprache):
         return text.replace(kern, COVER[sprache][1].format(m.group(1)), 1)
     if re.search(r"\d{2}\.\d{2}\.\d{4}", kern) or re.search(r"\d+ Titel", kern):
         neu = datum(kern, sprache)
-        neu = re.sub(r"(\d+) Titel", lambda m: f"{m.group(1)} {TITEL_WORT[sprache]}", neu)
+        if sprache == "pl":
+            neu = re.sub(r"(\d+) Titel", lambda m: f"{m.group(1)} {utwor(int(m.group(1)))}", neu)
+        else:
+            neu = re.sub(r"(\d+) Titel", lambda m: f"{m.group(1)} {TITEL_WORT[sprache]}", neu)
         if neu != kern:
             return text.replace(kern, neu, 1)
     return None
@@ -104,9 +121,24 @@ class Uebersetzer(HTMLParser):
         # Navigation und mitten im Satz verschieden uebersetzt gehoeren.
         for schluessel in (f"{self.datei}:{kern}", kern):
             if schluessel in self.tabelle:
-                return text.replace(kern, self.tabelle[schluessel], 1)
+                return self.einsetzen(text, kern, self.tabelle[schluessel])
         self.fehlend.setdefault(kern, set()).add(self.datei)
         return text
+
+    @staticmethod
+    def einsetzen(text, kern, ersatz):
+        """
+        Setzt die Uebersetzung ein und behaelt die Leerzeichen ringsum.
+
+        Ausnahme: Beginnt die Uebersetzung mit einem Satzzeichen, faellt das
+        Leerzeichen davor weg. Sonst entstuende "Erwacht , a pozniej" - die
+        deutsche Vorlage hatte an der Stelle keins, weil dort ein Wort stand.
+        """
+        vorn = text[:len(text) - len(text.lstrip())]
+        hinten = text[len(text.rstrip()):]
+        if ersatz[:1] in ",.;:!?)»":
+            vorn = ""
+        return vorn + ersatz + hinten
 
     def pfad(self, wert):
         """Bilder und Stylesheets liegen eine Ebene hoeher als en/ und fr/."""
@@ -185,7 +217,7 @@ class Uebersetzer(HTMLParser):
 def sprachwahl(datei, sprache):
     """Die Sprachwahl wird je Fassung neu gesetzt - Pfade und Markierung."""
     zeilen = ['  <div class="sprachen">']
-    for code in ("de", "en", "fr"):
+    for code in ALLE:
         if code == sprache:
             ziel = datei
         elif code == "de":
@@ -200,12 +232,11 @@ def sprachwahl(datei, sprache):
 
 
 def hreflang(datei, sprache):
-    zeilen = [
-        f'<link rel="alternate" hreflang="de" href="{BASIS}/{datei}">',
-        f'<link rel="alternate" hreflang="en" href="{BASIS}/en/{datei}">',
-        f'<link rel="alternate" hreflang="fr" href="{BASIS}/fr/{datei}">',
-        f'<link rel="alternate" hreflang="x-default" href="{BASIS}/{datei}">',
-    ]
+    zeilen = []
+    for code in ALLE:
+        ziel = datei if code == "de" else f"{code}/{datei}"
+        zeilen.append(f'<link rel="alternate" hreflang="{code}" href="{BASIS}/{ziel}">')
+    zeilen.append(f'<link rel="alternate" hreflang="x-default" href="{BASIS}/{datei}">')
     return "\n".join(zeilen)
 
 
