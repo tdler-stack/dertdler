@@ -50,7 +50,7 @@ hochladen() {
 }
 
 echo "Seiten und Gestaltung ..."
-for f in *.html *.css .htaccess; do
+for f in *.html *.css *.php .htaccess; do
   [ -f "$f" ] && hochladen "$f"
 done
 
